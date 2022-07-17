@@ -2,7 +2,6 @@ package com.fabrizio;
 
 /**
  * Hello world!
- *
  */
 public class App 
 {
