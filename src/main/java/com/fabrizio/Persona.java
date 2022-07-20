@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Persona {
     private Mediatore mediatore;
     private String name = "";
-    private int weight = 0;
+    private int peso = 0;
     private ArrayList<Integer> keys = new ArrayList<>();
     private int pianoCorrente = 1;
     private int pianoDestinazione = 0;
@@ -13,20 +13,21 @@ public class Persona {
     public Persona(){
     }
 
-    public Persona(String name, int weight, int pianoCorrente) {
+    public Persona(String name, int peso, int pianoCorrente) {
         this.name = name;
-        this.weight = weight;
+        this.peso = peso;
         this.pianoCorrente = pianoCorrente;
     }
 
     //get e set peso
-    public int getWeight() {
-        return weight;
+    public int getpeso() {
+        return peso;
     }
-    public Persona setWeight(int weight) {
-        this.weight = weight;
+    public Persona setpeso(int peso) {
+        this.peso = peso;
         return this;
     }
+
     //get e set nome
     public String getName() {
         return name;
@@ -35,6 +36,7 @@ public class Persona {
         this.name = name;
         return this;
     }
+
     //get e set pianoDestinazione
     public int getPianoDestinazione() {
         return pianoDestinazione;
@@ -42,6 +44,7 @@ public class Persona {
     public void setPianoDestinazione(int pianoDestinazione) {
         this.pianoDestinazione = pianoDestinazione;
     }
+
     //get e set pianoCorrente
     public int getPianoCorrente() {
         return pianoCorrente;
@@ -49,6 +52,7 @@ public class Persona {
     public void setPianoCorrente(int pianoCorrente) {
         this.pianoCorrente = pianoCorrente;
     }
+
     //get e set mediatore
     public Mediatore getMediatore() {
         return mediatore;
@@ -70,8 +74,11 @@ public class Persona {
     public void chiama(){
         mediatore.chiama(this);
     }
-
     public void entra(){
         mediatore.entra(this);
+    }
+
+    public void stampaPersona(){
+        System.out.println("nome persona: " + getName() + "\t peso: " + getpeso() + "\t si trova nel piano numero: " + getPianoCorrente());
     }
 }

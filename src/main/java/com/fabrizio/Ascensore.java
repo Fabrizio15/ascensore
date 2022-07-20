@@ -5,20 +5,22 @@ import java.util.ArrayList;
 public class Ascensore {
    
     private static Ascensore ascensore = null;
-    private int maxWeight = 0;
+    private int maxpeso = 0;
     private int currentFloor = 0;
     private ArrayList<Persona> persone = new ArrayList<>();
+    private stato stato;
 
     //costruttore privato di ascensore
-    private Ascensore(int maxWeight){
-        this.maxWeight = maxWeight;
+    private Ascensore(int maxpeso){
+        this.maxpeso = maxpeso;
+        this.stato = stato.Fermo;
     }
 
     //get pesoCorrente
-    public int getCurrentWeight() {
+    public int getCurrentpeso() {
         int peso = 0;
         for(Persona x : persone){
-            peso += x.getWeight();
+            peso += x.getpeso();
         }
         return peso;
     }
@@ -31,11 +33,11 @@ public class Ascensore {
         this.currentFloor = currentFloor;
     }
     //get e set pesoMax
-    public int getMaxWeight() {
-        return maxWeight;
+    public int getMaxpeso() {
+        return maxpeso;
     }
-    public void setMaxWeight(int maxWeight) {
-        this.maxWeight = maxWeight;
+    public void setMaxpeso(int maxpeso) {
+        this.maxpeso = maxpeso;
     }
 
     //metodo getInstance del dp Singleton per Ascensore
@@ -47,6 +49,13 @@ public class Ascensore {
         return ascensore;
     }
 
+    //metodi che fanno salire e scendere gente nell'ascensore
+    public void faiSalire(Persona persona){
+        persone.add(persona);
+    }
+    public void faiScendere(Persona persona){
+        persone.remove(persona);
+    }
 
     //vai al piano destinazione
     public void vaiAlPiano(int destinazione){
@@ -60,12 +69,24 @@ public class Ascensore {
         }
     }
 
+    public enum stato{
+        Salendo,Scendendo,Fermo
+    }
+
+    public stato getStato() {
+        return stato;
+    }
+    public void setStato(stato stato) {
+        this.stato = stato;
+    }
+
+
     public void stampaAscensore(){
-        System.out.println("piano corrente dell'ascensore:" + getCurrentFloor());
-        if(persone != null){
+        System.out.println("piano corrente dell'ascensore:" + getCurrentFloor() + "\t stato corrente dell'asccensore: " + getStato());
+        if(persone.size() != 0){
             System.out.println("le persone dentro sono:");
             for(Persona x : persone){
-                System.out.println(x.getName());
+                x.stampaPersona();
             }
         }
         else
