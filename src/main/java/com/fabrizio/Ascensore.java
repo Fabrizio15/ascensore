@@ -6,7 +6,7 @@ public class Ascensore {
    
     private static Ascensore ascensore = null;
     private int maxpeso = 0;
-    private int currentFloor = 0;
+    private int currentFloor = 10;
     private ArrayList<Persona> persone = new ArrayList<>();
     private stato stato;
     private sensoDiMarcia sensoDiMarcia;
@@ -63,33 +63,34 @@ public class Ascensore {
 
     //metodi che fanno salire e scendere gente nell'ascensore
     public void faiSalire(Persona persona){
-        System.out.println("sono in fai salire, sto inserendo una persona");
-        ascensore.stampaAscensore();
+        //System.out.println("sono in fai salire, sto inserendo una persona");
+        //ascensore.stampaAscensore();
         persone.add(persona);
-        System.out.println("sono in fai salire, ho inserito una persona");
-        ascensore.stampaAscensore();
+        System.out.println("sono in fai salire, ho inserito una persona: " + persona.getName());
+        //ascensore.stampaAscensore();
     }
     public void faiScendere(Persona persona){
-        System.out.println("sono in fai scendere, sto eliminando una persona");
-        ascensore.stampaAscensore();
+        //System.out.println("sono in fai scendere, sto eliminando una persona");
+        //ascensore.stampaAscensore();
         persone.remove(persona);
-        System.out.println("sono in fai scendere, ho eliminato una persona");
-        ascensore.stampaAscensore();
+        System.out.println("sono in fai scendere, ho eliminato una persona:" + persona.getName());
+        //ascensore.stampaAscensore();
     }
 
     //butta fuori dall'ascensore tutte le persone che sono arrivate
     public void svuota(){
         ArrayList<Persona> copia = listcopy(persone);
         for(Persona x : copia){
-            if(x.getPianoDestinazione() == getCurrentFloor())
+            if(x.getPianoDestinazione() == getCurrentFloor()){
 
-                System.out.println("SONO NEL FOR CHE CI INTERESSA IN SVUOTA");
-                
+                //System.out.println("SONO NEL FOR CHE CI INTERESSA IN SVUOTA");
+
                 faiScendere(x);
                 x.setPianoCorrente(getCurrentFloor());
                 x.setPianoDestinazione(0);
-                System.out.println("la persona dopo svuota: ");
-                x.stampaPersona();
+               // System.out.println("la persona dopo svuota: ");
+               // x.stampaPersona();
+            }
         }
     }
 
@@ -131,14 +132,17 @@ public class Ascensore {
     }
 
     public void stampaAscensore(){
+        System.out.println("*************************************************");
         System.out.println("piano corrente dell'ascensore:" + getCurrentFloor() + "\t stato corrente dell'asccensore: " + getStato());
         if(persone.size() != 0){
-            System.out.println("le persone dentro sono:");
+            System.out.println("le persone dentro sono:\n");
             for(Persona x : persone){
                 x.stampaPersona();
             }
+
         }
         else
             System.out.println("l'ascensore non contiene alcuna persona");
+        System.out.println("*************************************************");
     }
 }

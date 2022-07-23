@@ -57,7 +57,7 @@ public class Mediatore {
 
 
     public void parti(){
-        while(pianiDaVisitare.size()!=0){
+        while(pianiDaVisitare.size()!=0 || inAttesa.size()!=0){
 
             //try {
                 viaggia();
@@ -65,9 +65,15 @@ public class Mediatore {
 
         //    System.out.println("sono arrivato dopo viaggia");
             ascensore.svuota();
-        //    System.out.println("sono arrivato dopo ascensore.svuota");
+            
+            
+           // System.out.println("sono arrivato dopo ascensore.svuota");
             gestisciAttese();
+            
         //    System.out.println("sono arrivato dopo gestisci attese");
+
+
+
 
         }
     }
@@ -80,8 +86,26 @@ public class Mediatore {
         for(Persona x : copia){
     //        System.out.println("sono nel for di gestisci attese");
     //        System.out.println("sto per effettuare l'if con la persona: " + x.getName());
-            if (x.getPianoCorrente() == ascensore.getCurrentFloor())
+            //System.out.println("piano corrente persona: " + x.getPianoCorrente() + "  piano ascensore:" + ascensore.getCurrentFloor());
+             
+            /* 
+            for(Persona y : copia){
+                //System.out.println("lista d'attesa:");
+                y.stampaPersona(); 
+            }
+            */
+
+            /* 
+            for(int z : pianiDaVisitare){
+                System.out.println("piani da visitare:" + z);
+            }
+            */
+           //ascensore.stampaAscensore();
+
+            //if (x.getPianoCorrente() == ascensore.getCurrentFloor()){
                 x.chiama();
+            //}
+
         }
     //    System.out.println("sono alla fine di gestisci attese");
     }
@@ -91,20 +115,24 @@ public class Mediatore {
     public void chiedi(Persona persona){
         Scanner scanner = new Scanner(System.in);
         int destinazione = 0;
+
         if(persona.getPianoDestinazione() == 0){
-            while(destinazione <= 0 && destinazione > numeroDiPiani){
+
+            while(destinazione <= 0 || destinazione > numeroDiPiani){
                 //chiedi di inserire un piano
                 System.out.println(persona.getName() + "inserisci il piano desiderato:");
 
                 String input = scanner.nextLine();
                 destinazione = Integer.parseInt(input);
             }
-            persona.setPianoDestinazione(destinazione);
+            persona.setPianoDestinazione(destinazione); //TODO la destinazione sarà sempre 0
             //devi aggiungere il piano alla lista 
+            System.out.println("XXXXXXX");
             aggiungiPianoAllaLista(persona.getPianoDestinazione());
         }
         //nel caso in cui il piano è già sbagliato TODO vedi se questo caso esiste
         else if(persona.getPianoDestinazione() <= 0 || persona.getPianoDestinazione() > numeroDiPiani){
+
             persona.setPianoDestinazione(0);
             chiedi(persona);
         }
@@ -126,12 +154,15 @@ public class Mediatore {
             chiedi(persona);
         }
         else{
-            inAttesa.add(persona);
+            if(!inAttesa.contains(persona)){  //TODO aggiunta modifica
+                System.out.println("sto aggiungendo " + persona.getName() + " in lista di attesa");
+                inAttesa.add(persona);
             //ascensore.vaiAlPiano(persona.getPianoCorrente());
             //entra(persona);
 
             //devi mettere il piano della persona nella lista dei piano da visitare
-            aggiungiPianoAllaLista(persona.getPianoCorrente());
+            }
+            aggiungiPianoAllaLista(persona.getPianoCorrente()); //TODO aggiunta modifica debug 1
         }
         
         //dovrai vedere il piano della persona che chiama
