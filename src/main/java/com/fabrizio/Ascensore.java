@@ -9,6 +9,18 @@ public class Ascensore {
     private int currentFloor = 0;
     private ArrayList<Persona> persone = new ArrayList<>();
     private stato stato;
+    private sensoDiMarcia sensoDiMarcia;
+
+
+
+    private<T> ArrayList<T> listcopy(ArrayList<T> list){
+        ArrayList<T> res = new ArrayList<T>();
+        for(T element : list)
+            res.add(element);
+        return res;
+    }
+
+
 
     //costruttore privato di ascensore
     private Ascensore(int maxpeso){
@@ -51,23 +63,55 @@ public class Ascensore {
 
     //metodi che fanno salire e scendere gente nell'ascensore
     public void faiSalire(Persona persona){
+        System.out.println("sono in fai salire, sto inserendo una persona");
+        ascensore.stampaAscensore();
         persone.add(persona);
+        System.out.println("sono in fai salire, ho inserito una persona");
+        ascensore.stampaAscensore();
     }
     public void faiScendere(Persona persona){
+        System.out.println("sono in fai scendere, sto eliminando una persona");
+        ascensore.stampaAscensore();
         persone.remove(persona);
+        System.out.println("sono in fai scendere, ho eliminato una persona");
+        ascensore.stampaAscensore();
     }
+
+    //butta fuori dall'ascensore tutte le persone che sono arrivate
+    public void svuota(){
+        ArrayList<Persona> copia = listcopy(persone);
+        for(Persona x : copia){
+            if(x.getPianoDestinazione() == getCurrentFloor())
+
+                System.out.println("SONO NEL FOR CHE CI INTERESSA IN SVUOTA");
+                
+                faiScendere(x);
+                x.setPianoCorrente(getCurrentFloor());
+                x.setPianoDestinazione(0);
+                System.out.println("la persona dopo svuota: ");
+                x.stampaPersona();
+        }
+    }
+
 
     //vai al piano destinazione
     public void vaiAlPiano(int destinazione){
-        if(getCurrentFloor() < destinazione){
-            //deve salire
-            setCurrentFloor(destinazione);
-        }
-        else{
-            //deve scendere
-            setCurrentFloor(destinazione);
-        }
+        setCurrentFloor(destinazione);
+        spostaPersone();
     }
+
+    public enum sensoDiMarcia{
+        sopra,sotto
+    }
+    // get e set sensodimarcia
+    public sensoDiMarcia getSensoDiMarcia() {
+        return sensoDiMarcia;
+    }
+
+    public void setSensoDiMarcia(sensoDiMarcia sensoDiMarcia) {
+        this.sensoDiMarcia = sensoDiMarcia;
+    }
+
 
     public enum stato{
         Salendo,Scendendo,Fermo
@@ -80,6 +124,11 @@ public class Ascensore {
         this.stato = stato;
     }
 
+    void spostaPersone(){
+        for(Persona x : persone){
+            x.setPianoCorrente(getCurrentFloor());
+        }
+    }
 
     public void stampaAscensore(){
         System.out.println("piano corrente dell'ascensore:" + getCurrentFloor() + "\t stato corrente dell'asccensore: " + getStato());

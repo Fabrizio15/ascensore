@@ -1,12 +1,12 @@
 package com.fabrizio;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 public class Persona {
     private Mediatore mediatore;
     private String name = "";
     private int peso = 0;
-    private ArrayList<Integer> keys = new ArrayList<>();
+    //private ArrayList<Integer> keys = new ArrayList<>();
     private int pianoCorrente = 1;
     private int pianoDestinazione = 0;
 
@@ -62,6 +62,7 @@ public class Persona {
     }
 
     //il seguente metodo da a una persona una chiave per un dererminato piano
+    /* 
     public void add(int key){
         if(keys.contains(key)){
             System.out.println("la chiave è già presente");
@@ -69,7 +70,7 @@ public class Persona {
         else
             keys.add(key);
     }
-
+    */
     //metodo che chiama l'ascensore
     public void chiama(){
         mediatore.chiama(this);

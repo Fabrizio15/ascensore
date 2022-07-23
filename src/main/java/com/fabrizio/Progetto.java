@@ -1,43 +1,51 @@
 package com.fabrizio;
 
-/**
- * Hello world!
- */
 public class Progetto   
 {
-    public static void main( String[] args )
-    {
-       // System.out.println( "Hello World!" );
-        Persona p = new Persona();
-        p.setName("Giacomo").setpeso(60);
+    public static void main( String[] args ){
 
         Ascensore a1 = Ascensore.getAscensore();
-
-        //System.out.println("nome: " + p.getName() + "\n peso: " + p.getpeso());
-
         Piano pi1 = new Piano(1, 0);
-      //  Piano pi2 = pi1.clone();
-      //  pi2.setNumFloor(2);
-      //  Piano pi3 = new Piano(3, 4);
-        
-      //  System.out.println("piano p1 :" + pi1.getNumFloor() + "\npiano pi2 :" + pi2.getNumFloor());
-        
-        Mediatore costruzione = new Mediatore(p, a1, pi1);
-        p.setMediatore(costruzione);
+
+        Mediatore costruzione = new Mediatore(a1, pi1);
         
         costruzione.creaPalazzo(10);
-
         costruzione.stampaPalazzo();
 
-        p.setPianoDestinazione(7);
-        
-        p.stampaPersona();
+        Persona a = new Persona("Giacomo",60,3);
+        Persona b = new Persona("Giulio",50,7);
+        Persona c = new Persona("Fabrizio",90,1);
+        Persona d = new Persona("Giovanni",60,1);
 
-        System.out.println("sto chiamando l'ascensore");
-        a1.stampaAscensore();
-        p.chiama();
+        a.setMediatore(costruzione);
+        b.setMediatore(costruzione);
+        c.setMediatore(costruzione);
+     //   d.setMediatore(costruzione);
 
+        a.setPianoDestinazione(2);
+        b.setPianoDestinazione(2);
+        c.setPianoDestinazione(2);
+      //  d.setPianoDestinazione(5);
+
+        a.chiama();
+        b.chiama();
+        c.chiama();
+      //  d.chiama();
+
+        System.out.println("stato iniziale:");
         a1.stampaAscensore();
+        costruzione.parti();
+
+        System.out.println("stato finale: ");
+        a1.stampaAscensore();
+
+        System.out.println("persone:");
+
+        a.stampaPersona();
+        b.stampaPersona();
+        c.stampaPersona();
+    //    d.stampaPersona();
+
 
     }
     
