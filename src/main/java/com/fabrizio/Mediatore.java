@@ -3,32 +3,78 @@ package com.fabrizio;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
-
-import javax.lang.model.element.Element;
-
+import java.util.stream.Collectors;
 import com.fabrizio.Ascensore.sensoDiMarcia;
-import com.fabrizio.Ascensore.stato;
 
 
 
 public class Mediatore {
     private Ascensore ascensore;
     private Piano piano;
+
+    private Controller controller;
+    private View view;
+
     private ArrayList<Piano> palazzo = new ArrayList<>();
-    private int numeroDiPiani;
+    private ArrayList<Persona> personeNelPalazzo = new ArrayList<>();
+    private int numeroDiPiani = 0;
 
     private ArrayList<Integer> pianiDaVisitare = new ArrayList<>(); 
     private ArrayList<Persona> inAttesa = new ArrayList<>();
 
 
 
-
-
-    public Mediatore(Ascensore ascensore, Piano piano){
-        this.ascensore = Ascensore.getAscensore();
-        this.piano = piano;
+    public Mediatore(View view, Controller controller){
+        ascensore = Ascensore.getAscensore();
+        this.piano = new Piano(1, 0);
+        this.view = view;
+        this.controller = controller;
     }
 
+
+    public ArrayList<Persona> getPersoneNelPalazzo(){
+        return personeNelPalazzo;
+    }
+
+
+    public boolean richiedi(String x){
+        for(Persona p : personeNelPalazzo){
+            if(p.getName().equals(x)){
+                chiama(p);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public boolean aggiungiPersona(Persona persona){
+        if(!personeNelPalazzo.stream()
+                            .map(Persona::getName)
+                            .collect(Collectors.toList())
+                            .contains(persona.getName())){
+            personeNelPalazzo.add(persona);
+            return true;
+        }
+        return false;
+    }
+
+
+
+    public boolean rimuoviPersona(String nome){
+        ArrayList<Persona> copia = listcopy(personeNelPalazzo);
+        for(Persona p : copia){
+            if(p.getName().equals(nome)){
+                personeNelPalazzo.remove(p);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    //il seguente metodo crea una copia della lista
 
     private<T> ArrayList<T> listcopy(ArrayList<T> list){
         ArrayList<T> res = new ArrayList<T>();
@@ -58,56 +104,18 @@ public class Mediatore {
 
     public void parti(){
         while(pianiDaVisitare.size()!=0 || inAttesa.size()!=0){
-
-            //try {
-                viaggia();
-            //}catch(Exception e){return;}; 
-
-        //    System.out.println("sono arrivato dopo viaggia");
+            viaggia();
             ascensore.svuota();
-            
-            
-           // System.out.println("sono arrivato dopo ascensore.svuota");
             gestisciAttese();
-            
-        //    System.out.println("sono arrivato dopo gestisci attese");
-
-
-
-
         }
     }
 
 
-    //
     public void gestisciAttese(){
-    //    System.out.println("sono nel metodo gestisci attese");
         ArrayList<Persona> copia = listcopy(inAttesa); 
         for(Persona x : copia){
-    //        System.out.println("sono nel for di gestisci attese");
-    //        System.out.println("sto per effettuare l'if con la persona: " + x.getName());
-            //System.out.println("piano corrente persona: " + x.getPianoCorrente() + "  piano ascensore:" + ascensore.getCurrentFloor());
-             
-            /* 
-            for(Persona y : copia){
-                //System.out.println("lista d'attesa:");
-                y.stampaPersona(); 
-            }
-            */
-
-            /* 
-            for(int z : pianiDaVisitare){
-                System.out.println("piani da visitare:" + z);
-            }
-            */
-           //ascensore.stampaAscensore();
-
-            //if (x.getPianoCorrente() == ascensore.getCurrentFloor()){
                 x.chiama();
-            //}
-
         }
-    //    System.out.println("sono alla fine di gestisci attese");
     }
 
 
@@ -118,19 +126,20 @@ public class Mediatore {
 
         if(persona.getPianoDestinazione() == 0){
 
-            while(destinazione <= 0 || destinazione > numeroDiPiani){
+            while(destinazione <= 0 || destinazione > numeroDiPiani || destinazione == persona.getPianoCorrente()){
                 //chiedi di inserire un piano
-                System.out.println(persona.getName() + "inserisci il piano desiderato:");
+                System.out.println(persona.getName() + " inserisci un piano compreso tra 1 e " + numeroDiPiani);
 
                 String input = scanner.nextLine();
-                destinazione = Integer.parseInt(input);
+                try{
+                    destinazione = Integer.parseInt(input);
+                }catch(NumberFormatException e){continue;}
             }
-            persona.setPianoDestinazione(destinazione); //TODO la destinazione sarà sempre 0
+            persona.setPianoDestinazione(destinazione);
             //devi aggiungere il piano alla lista 
-            System.out.println("XXXXXXX");
             aggiungiPianoAllaLista(persona.getPianoDestinazione());
         }
-        //nel caso in cui il piano è già sbagliato TODO vedi se questo caso esiste
+        //nel caso in cui il piano è già sbagliato
         else if(persona.getPianoDestinazione() <= 0 || persona.getPianoDestinazione() > numeroDiPiani){
 
             persona.setPianoDestinazione(0);
@@ -143,29 +152,26 @@ public class Mediatore {
     }
 
 
-
 // quando una persona chiama l'ascensore da qualsiasi piano
 // vede se è nello stesso piano in caso chiama chiama chiedi ed entra
 // altrimenti mette la persona in attesa
 
     public void chiama(Persona persona){
+        if(ascensore.getPersone().contains(persona))
+        return;
         if(persona.getPianoCorrente() == ascensore.getCurrentFloor()){
             entra(persona);
             chiedi(persona);
         }
         else{
-            if(!inAttesa.contains(persona)){  //TODO aggiunta modifica
-                System.out.println("sto aggiungendo " + persona.getName() + " in lista di attesa");
+            if(!inAttesa.contains(persona)){
+            //    System.out.println("sto aggiungendo " + persona.getName() + " in lista di attesa");
                 inAttesa.add(persona);
-            //ascensore.vaiAlPiano(persona.getPianoCorrente());
-            //entra(persona);
 
             //devi mettere il piano della persona nella lista dei piano da visitare
             }
-            aggiungiPianoAllaLista(persona.getPianoCorrente()); //TODO aggiunta modifica debug 1
+            aggiungiPianoAllaLista(persona.getPianoCorrente());
         }
-        
-        //dovrai vedere il piano della persona che chiama
     }
 
     public void entra(Persona persona){
@@ -194,14 +200,9 @@ public class Mediatore {
             return;
         }
 
-        for(int x : pianiDaVisitare){
-            System.out.print(x + " ");
-        }
-        System.out.println();
-
         Optional<Integer> prossimoPiano;
         
-        if(ascensore.getSensoDiMarcia() == Ascensore.sensoDiMarcia.sopra){
+        if(ascensore.getSensoDiMarcia() == Ascensore.sensoDiMarcia.salendo){
             prossimoPiano = pianiDaVisitare.stream()
                             .filter(x -> x > ascensore.getCurrentFloor())
                             .min((i,j)->i.compareTo(j));
@@ -214,12 +215,11 @@ public class Mediatore {
         }
 
         if(prossimoPiano.isPresent() == false){
-            if(ascensore.getSensoDiMarcia() == Ascensore.sensoDiMarcia.sopra)
-                ascensore.setSensoDiMarcia(sensoDiMarcia.sotto);
+            if(ascensore.getSensoDiMarcia() == Ascensore.sensoDiMarcia.salendo)
+                ascensore.setSensoDiMarcia(sensoDiMarcia.scendendo);
             else
-                ascensore.setSensoDiMarcia(sensoDiMarcia.sopra);
+                ascensore.setSensoDiMarcia(sensoDiMarcia.salendo);
             viaggia();
-            //throw new Exception("raggiunto top");
             return;
         }
 
@@ -227,8 +227,6 @@ public class Mediatore {
         ascensore.vaiAlPiano(prossimoPiano.get());
         pianiDaVisitare.remove(Integer.valueOf(prossimoPiano.get()));
     }
-
-
 
 // aggiunge un piano alla lista
     public void aggiungiPianoAllaLista(int piano){
@@ -240,9 +238,6 @@ public class Mediatore {
         pianiDaVisitare.sort(Integer::compare);
     }
 
-
-
-
     public int getNumeroDiPiani() {
         return numeroDiPiani;
     }
@@ -250,10 +245,11 @@ public class Mediatore {
         this.numeroDiPiani = numeroDiPiani;
     }
 
-
+/* 
     public void stampaPalazzo(){
         for(Piano x : palazzo){
             System.out.println("questo è il piano numero: " + x.getNumFloor());
         }
     }
+*/
 }

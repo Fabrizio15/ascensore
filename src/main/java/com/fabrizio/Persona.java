@@ -13,10 +13,11 @@ public class Persona {
     public Persona(){
     }
 
-    public Persona(String name, int peso, int pianoCorrente) {
+    public Persona(String name, int peso, int pianoCorrente, Mediatore mediatore) {
         this.name = name;
         this.peso = peso;
         this.pianoCorrente = pianoCorrente;
+        this.mediatore = mediatore;
     }
 
     //get e set peso
@@ -79,7 +80,4 @@ public class Persona {
         mediatore.entra(this);
     }
 
-    public void stampaPersona(){
-        System.out.println("nome persona: " + getName() + "\t peso: " + getpeso() + "\t si trova nel piano numero: " + getPianoCorrente());
-    }
 }
