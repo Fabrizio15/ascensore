@@ -26,7 +26,7 @@ public class Mediatore {
 
     public Mediatore(View view, Controller controller){
         ascensore = Ascensore.getAscensore();
-        this.piano = new Piano(1, 0);
+        this.piano = new Piano(1);
         //this.view = view;
         //this.controller = controller;
     }

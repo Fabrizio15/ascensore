@@ -162,12 +162,12 @@ public class AppTest
         assertTrue(mediatore.getInAttesa().size() == 0);
     }
 
-    
+    /* 
     @Test
     public void shouldAnswerWithTrue()
     {
         assertTrue( true );
     }
-
+    */
     
 }

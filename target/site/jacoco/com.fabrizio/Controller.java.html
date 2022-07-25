@@ -25,7 +25,7 @@ public class Controller {
 <span class="nc" id="L25">            return chiediInput(richiesta, min, max);</span>
         }
 <span class="nc bnc" id="L27" title="All 4 branches missed.">        if(res &lt; min || res &gt; max){</span>
-<span class="nc" id="L28">            System.out.println(&quot;inserire un numero valido&quot;);</span>
+<span class="nc" id="L28">            System.out.println(&quot;inserire un numero valido (compreso tra &quot; + min + &quot; e &quot; + max + &quot;)&quot;);</span>
 <span class="nc" id="L29">            return chiediInput(richiesta, min, max);</span>
         }
 <span class="nc" id="L31">        return res;</span>
@@ -45,7 +45,7 @@ public class Controller {
 <span class="nc bnc" id="L45" title="All 9 branches missed.">        switch(x){</span>
             case 1:
 <span class="nc bnc" id="L47" title="All 2 branches missed.">                if(mediatore.getNumeroDiPiani() == 0){</span>
-<span class="nc" id="L48">                    int numeroPiani = chiediInput(&quot;inserire numero piani&quot;, 1, 50);</span>
+<span class="nc" id="L48">                    int numeroPiani = chiediInput(&quot;inserire numero piani&quot;, 1, 100);</span>
 <span class="nc" id="L49">                    mediatore.creaPalazzo(numeroPiani);</span>
 <span class="nc" id="L50">                }</span>
                 else 
@@ -57,7 +57,7 @@ public class Controller {
 <span class="nc" id="L57">                    break;</span>
                 }
 <span class="nc" id="L59">                String nome = chiediStringa(&quot;inserisci il nome della persona:&quot;);</span>
-<span class="nc" id="L60">                int peso = chiediInput(&quot;inserire il peso della persona&quot;, 1, 999);</span>
+<span class="nc" id="L60">                int peso = chiediInput(&quot;inserire il peso della persona&quot;, 1, 300);</span>
 <span class="nc" id="L61">                int pianoCorrente = chiediInput(&quot;inserisci il piano corrente della persona&quot;, 1, mediatore.getNumeroDiPiani());</span>
 <span class="nc bnc" id="L62" title="All 2 branches missed.">                if(mediatore.aggiungiPersona(new Persona(nome, peso,pianoCorrente,mediatore)))</span>
 <span class="nc" id="L63">                    System.out.println(&quot;la persona è stata aggiunta al palazzo&quot;);</span>

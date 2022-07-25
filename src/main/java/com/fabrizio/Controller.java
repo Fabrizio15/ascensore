@@ -25,7 +25,7 @@ public class Controller {
             return chiediInput(richiesta, min, max);
         }
         if(res < min || res > max){
-            System.out.println("inserire un numero valido");
+            System.out.println("inserire un numero valido (compreso tra " + min + " e " + max + ")");
             return chiediInput(richiesta, min, max);
         }
         return res;
@@ -45,7 +45,7 @@ public class Controller {
         switch(x){
             case 1:
                 if(mediatore.getNumeroDiPiani() == 0){
-                    int numeroPiani = chiediInput("inserire numero piani", 1, 50);
+                    int numeroPiani = chiediInput("inserire numero piani", 1, 100);
                     mediatore.creaPalazzo(numeroPiani);
                 }
                 else 
@@ -57,7 +57,7 @@ public class Controller {
                     break;
                 }
                 String nome = chiediStringa("inserisci il nome della persona:");
-                int peso = chiediInput("inserire il peso della persona", 1, 999);
+                int peso = chiediInput("inserire il peso della persona", 1, 300);
                 int pianoCorrente = chiediInput("inserisci il piano corrente della persona", 1, mediatore.getNumeroDiPiani());
                 if(mediatore.aggiungiPersona(new Persona(nome, peso,pianoCorrente,mediatore)))
                     System.out.println("la persona è stata aggiunta al palazzo");
