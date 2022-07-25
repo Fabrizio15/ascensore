@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ascensore</a> &gt; <a href="index.source.html" class="el_package">com.fabrizio</a> &gt; <span class="el_source">Controller.java</span></div><h1>Controller.java</h1><pre class="source lang-java linenums">package com.fabrizio;
+
+import java.util.Scanner;
+
+
+public class Controller {
+    
+    private Mediatore mediatore;
+    private View view;
+<span class="fc" id="L10">    private Scanner input = new Scanner(System.in);</span>
+
+
+<span class="fc" id="L13">    public Controller(){</span>
+<span class="fc" id="L14">    }</span>
+
+// chiede un input da tastiera di tipo intero
+    public int chiediInput(String richiesta, int min, int max){
+<span class="nc" id="L18">        System.out.println(richiesta + &quot;:&quot;);</span>
+<span class="nc" id="L19">        String ans = input.nextLine();</span>
+<span class="nc" id="L20">        int res = 0;</span>
+        try{
+<span class="nc" id="L22">            res = Integer.parseInt(ans);</span>
+<span class="nc" id="L23">        }catch (NumberFormatException e){</span>
+<span class="nc" id="L24">            System.out.println(&quot;il valore inserito non è un numero&quot;);</span>
+<span class="nc" id="L25">            return chiediInput(richiesta, min, max);</span>
+        }
+<span class="nc bnc" id="L27" title="All 4 branches missed.">        if(res &lt; min || res &gt; max){</span>
+<span class="nc" id="L28">            System.out.println(&quot;inserire un numero valido&quot;);</span>
+<span class="nc" id="L29">            return chiediInput(richiesta, min, max);</span>
+        }
+<span class="nc" id="L31">        return res;</span>
+    }
+
+
+    public void setMediatore(Mediatore mediatore) {
+<span class="fc" id="L36">        this.mediatore = mediatore;</span>
+<span class="fc" id="L37">    }</span>
+
+    public void setView(View view) {
+<span class="fc" id="L40">        this.view = view;</span>
+<span class="fc" id="L41">    }</span>
+
+// eventi possibili
+    public boolean handleEvent(int x){
+<span class="nc bnc" id="L45" title="All 9 branches missed.">        switch(x){</span>
+            case 1:
+<span class="nc bnc" id="L47" title="All 2 branches missed.">                if(mediatore.getNumeroDiPiani() == 0){</span>
+<span class="nc" id="L48">                    int numeroPiani = chiediInput(&quot;inserire numero piani&quot;, 1, 50);</span>
+<span class="nc" id="L49">                    mediatore.creaPalazzo(numeroPiani);</span>
+<span class="nc" id="L50">                }</span>
+                else 
+<span class="nc" id="L52">                    System.out.println(&quot;il palazzo è stato già inizializzato&quot;);</span>
+<span class="nc" id="L53">                break;</span>
+            case 2:
+<span class="nc bnc" id="L55" title="All 2 branches missed.">                if(mediatore.getNumeroDiPiani() == 0){</span>
+<span class="nc" id="L56">                    System.out.println(&quot;il palazzo non è ancora inizializzato&quot;);</span>
+<span class="nc" id="L57">                    break;</span>
+                }
+<span class="nc" id="L59">                String nome = chiediStringa(&quot;inserisci il nome della persona:&quot;);</span>
+<span class="nc" id="L60">                int peso = chiediInput(&quot;inserire il peso della persona&quot;, 1, 999);</span>
+<span class="nc" id="L61">                int pianoCorrente = chiediInput(&quot;inserisci il piano corrente della persona&quot;, 1, mediatore.getNumeroDiPiani());</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">                if(mediatore.aggiungiPersona(new Persona(nome, peso,pianoCorrente,mediatore)))</span>
+<span class="nc" id="L63">                    System.out.println(&quot;la persona è stata aggiunta al palazzo&quot;);</span>
+                else 
+<span class="nc" id="L65">                    System.out.println(&quot;esiste già una persona con lo stesso nome&quot;);</span>
+<span class="nc" id="L66">                break;</span>
+            case 3:
+<span class="nc" id="L68">                String a = chiediStringa(&quot;quale persona vuoi eliminare dal palazzo&quot;);</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">                if(mediatore.rimuoviPersona(a))</span>
+<span class="nc" id="L70">                    System.out.println(&quot;persona rimossa&quot;);</span>
+                else
+<span class="nc" id="L72">                    System.out.println(&quot;non è presente la persona &quot; + a + &quot; nel palazzo&quot;);</span>
+<span class="nc" id="L73">                break;</span>
+            case 4:
+<span class="nc" id="L75">                view.stampaAscensore(mediatore.getAscensore());</span>
+<span class="nc" id="L76">                break;</span>
+            //persone nel palazzo
+            case 5:
+<span class="nc bnc" id="L79" title="All 2 branches missed.">                for(Persona persona : mediatore.getPersoneNelPalazzo())</span>
+<span class="nc" id="L80">                    view.stampaPersona(persona);</span>
+<span class="nc" id="L81">                break;</span>
+            case 6:
+<span class="nc" id="L83">                String b = chiediStringa(&quot;quale persona vuole chiamare l'ascensore?&quot;);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                if(mediatore.richiedi(b))</span>
+<span class="nc" id="L85">                    System.out.println(&quot;la persona: &quot; + b + &quot; ha chiamato l'ascensore&quot;);</span>
+                else 
+<span class="nc" id="L87">                    System.out.println(&quot;la persona non è presente nel palazzo&quot;);</span>
+<span class="nc" id="L88">                break;</span>
+            case 7:
+<span class="nc" id="L90">                mediatore.parti();</span>
+<span class="nc" id="L91">                break;</span>
+            case 8:
+<span class="nc" id="L93">                return false;</span>
+        }
+<span class="nc" id="L95">        return true;</span>
+    }
+    
+    
+    public boolean nextOperation(){
+<span class="nc" id="L100">        view.stampaMenu();</span>
+<span class="nc" id="L101">        int ans = chiediInput(&quot;&quot;, 1, 8);</span>
+<span class="nc" id="L102">        return handleEvent(ans);</span>
+    }
+
+
+    public String chiediStringa(String richiesta){
+<span class="nc" id="L107">        System.out.println(richiesta + &quot;:&quot;);</span>
+<span class="nc" id="L108">        String ans = input.nextLine();</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if(ans == &quot;&quot;){</span>
+<span class="nc" id="L110">            System.out.println(&quot;inserisci un nome non vuoto per la persona&quot;);</span>
+<span class="nc" id="L111">            return chiediStringa(richiesta);</span>
+        }
+<span class="nc" id="L113">        return ans;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

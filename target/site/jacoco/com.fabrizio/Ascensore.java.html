@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Ascensore.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ascensore</a> &gt; <a href="index.source.html" class="el_package">com.fabrizio</a> &gt; <span class="el_source">Ascensore.java</span></div><h1>Ascensore.java</h1><pre class="source lang-java linenums">package com.fabrizio;
+
+import java.util.ArrayList;
+
+public class Ascensore {
+   
+<span class="fc" id="L7">    private static Ascensore ascensore = null;</span>
+<span class="fc" id="L8">    private int maxpeso = 0;</span>
+<span class="fc" id="L9">    private int currentFloor = 1;</span>
+<span class="fc" id="L10">    private ArrayList&lt;Persona&gt; persone = new ArrayList&lt;&gt;();</span>
+    private sensoDiMarcia sensoDiMarcia;
+
+
+
+    private&lt;T&gt; ArrayList&lt;T&gt; listcopy(ArrayList&lt;T&gt; list){
+<span class="fc" id="L16">        ArrayList&lt;T&gt; res = new ArrayList&lt;T&gt;();</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        for(T element : list)</span>
+<span class="fc" id="L18">            res.add(element);</span>
+<span class="fc" id="L19">        return res;</span>
+    }
+
+
+
+    //costruttore privato di ascensore
+<span class="fc" id="L25">    private Ascensore(int maxpeso){</span>
+<span class="fc" id="L26">        this.maxpeso = maxpeso;</span>
+<span class="fc" id="L27">        this.sensoDiMarcia = sensoDiMarcia.salendo;</span>
+<span class="fc" id="L28">    }</span>
+
+    //get pesoCorrente
+    public int getCurrentpeso() {
+<span class="fc" id="L32">        int peso = 0;</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        for(Persona x : persone){</span>
+<span class="fc" id="L34">            peso += x.getpeso();</span>
+        }
+<span class="fc" id="L36">        return peso;</span>
+    }
+
+    //get e set pianoCorrente
+    public int getCurrentFloor() {
+<span class="fc" id="L41">        return currentFloor;</span>
+    }
+    public void setCurrentFloor(int currentFloor) {
+<span class="fc" id="L44">        this.currentFloor = currentFloor;</span>
+<span class="fc" id="L45">    }</span>
+    //get e set pesoMax
+    public int getMaxpeso() {
+<span class="fc" id="L48">        return maxpeso;</span>
+    }
+    public void setMaxpeso(int maxpeso) {
+<span class="nc" id="L51">        this.maxpeso = maxpeso;</span>
+<span class="nc" id="L52">    }</span>
+
+    //metodo getInstance del dp Singleton per Ascensore
+    //di default il peso massimo dell'ascensore è 300
+    public static Ascensore getAscensore() {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if(ascensore == null){</span>
+<span class="fc" id="L58">            ascensore = new Ascensore(300);</span>
+        }
+<span class="fc" id="L60">        return ascensore;</span>
+    }
+
+    //metodi che fanno salire e scendere gente nell'ascensore
+    public void faiSalire(Persona persona){
+        //System.out.println(&quot;sono in fai salire, sto inserendo una persona&quot;);
+<span class="fc" id="L66">        persone.add(persona);</span>
+        //System.out.println(&quot;sono in fai salire, ho inserito una persona: &quot; + persona.getName());
+<span class="fc" id="L68">    }</span>
+    public void faiScendere(Persona persona){
+        //System.out.println(&quot;sono in fai scendere, sto eliminando una persona&quot;);
+<span class="fc" id="L71">        persone.remove(persona);</span>
+        //System.out.println(&quot;sono in fai scendere, ho eliminato una persona:&quot; + persona.getName());
+<span class="fc" id="L73">    }</span>
+
+    //butta fuori dall'ascensore tutte le persone che sono arrivate
+    public void svuota(){
+<span class="fc" id="L77">        ArrayList&lt;Persona&gt; copia = listcopy(persone);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        for(Persona x : copia){</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">            if(x.getPianoDestinazione() == getCurrentFloor()){</span>
+
+<span class="fc" id="L81">                faiScendere(x);</span>
+<span class="fc" id="L82">                x.setPianoCorrente(getCurrentFloor());</span>
+<span class="fc" id="L83">                x.setPianoDestinazione(0);</span>
+            }
+        }
+<span class="fc" id="L86">    }</span>
+
+
+    //vai al piano destinazione
+    public void vaiAlPiano(int destinazione){
+<span class="fc" id="L91">        setCurrentFloor(destinazione);</span>
+<span class="fc" id="L92">        spostaPersone();</span>
+<span class="fc" id="L93">    }</span>
+
+<span class="fc" id="L95">    public enum sensoDiMarcia{</span>
+<span class="fc" id="L96">        salendo,scendendo</span>
+    }
+    // get e set sensodimarcia
+    public sensoDiMarcia getSensoDiMarcia() {
+<span class="fc" id="L100">        return sensoDiMarcia;</span>
+    }
+
+    public void setSensoDiMarcia(sensoDiMarcia sensoDiMarcia) {
+<span class="fc" id="L104">        this.sensoDiMarcia = sensoDiMarcia;</span>
+<span class="fc" id="L105">    }</span>
+
+    void spostaPersone(){
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        for(Persona x : persone){</span>
+<span class="fc" id="L109">            x.setPianoCorrente(getCurrentFloor());</span>
+        }
+<span class="fc" id="L111">    }</span>
+
+    public ArrayList&lt;Persona&gt; getPersone() {
+<span class="fc" id="L114">        return persone;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

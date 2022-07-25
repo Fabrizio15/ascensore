@@ -8,7 +8,6 @@ public class Progetto
         Controller controllore = new Controller();
         View view = new View();
         Mediatore mediatore = new Mediatore(view, controllore);
-
         view.setMediatore(mediatore);
         controllore.setMediatore(mediatore);
         controllore.setView(view);

@@ -12,8 +12,8 @@ public class Mediatore {
     private Ascensore ascensore;
     private Piano piano;
 
-    private Controller controller;
-    private View view;
+    //private Controller controller;
+    //private View view;
 
     private ArrayList<Piano> palazzo = new ArrayList<>();
     private ArrayList<Persona> personeNelPalazzo = new ArrayList<>();
@@ -27,13 +27,16 @@ public class Mediatore {
     public Mediatore(View view, Controller controller){
         ascensore = Ascensore.getAscensore();
         this.piano = new Piano(1, 0);
-        this.view = view;
-        this.controller = controller;
+        //this.view = view;
+        //this.controller = controller;
     }
 
 
     public ArrayList<Persona> getPersoneNelPalazzo(){
         return personeNelPalazzo;
+    }
+    public ArrayList<Persona> getInAttesa(){
+        return inAttesa;
     }
 
 
